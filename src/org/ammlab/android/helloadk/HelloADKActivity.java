@@ -76,13 +76,13 @@ public class HelloADKActivity extends Activity implements Runnable {
 	private UsbManager mUsbManager;
 	private UsbAccessory mAccessory;
 
-	private Window mWindow;
+//	private Window mWindow;
 	private ActionBar actionBar;
 	// Declare Tab Variable
 	ActionBar.Tab Tab1, Tab2, Tab3;
 	Fragment fragmentTab1 = new Tab1();
-	Fragment fragmentTab2 = new Tab2();
-	Fragment fragmentTab3 = new Tab3();
+	Fragment fragmentTab2 = new Tab2(); 
+	Fragment fragmentTab3 = new Tab3(); 
 
 	ParcelFileDescriptor mFileDescriptor;
 
@@ -98,23 +98,23 @@ public class HelloADKActivity extends Activity implements Runnable {
 	//	private SeekBar mSeekBar2;
 	//	private SeekBar mSeekBar3;
 
-	SensorManager sensorManager;// 管理器对象
-	private Sensor gyroSensor;// 陀螺 传感器对象
-	private Sensor acceSensor;// 加表
-	private Sensor quatSensor;// 旋转适量
+	SensorManager sensorManager;// 绠＄悊鍣ㄥ璞�
+	private Sensor gyroSensor;// 闄�铻� 浼犳劅鍣ㄥ璞�
+	private Sensor acceSensor;// 鍔犺〃
+	private Sensor quatSensor;// 鏃嬭浆閫傞噺
 
 	private TextView tv_X;
 	private TextView tv_Y;
 	private TextView tv_Z;
 
-	private BluetoothAdapter mBluetoothAdapter = null;
-	private BluetoothSocket btSocket = null;
-	private OutputStream outStream = null;
-	private InputStream inStream = null;
+//	private BluetoothAdapter mBluetoothAdapter = null;
+//	private BluetoothSocket btSocket = null;
+//	private OutputStream outStream = null;
+//	private InputStream inStream = null;
 	// private static final UUID MY_UUID =
 	// UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	// //这条是蓝牙串口通用的UUID，不要更改
-	// private static String address = "00:06:71:00:61:47"; // <==要连接的蓝牙设备MAC地址
+	// //杩欐潯鏄摑鐗欎覆鍙ｉ�氱敤鐨刄UID锛屼笉瑕佹洿鏀�
+	// private static String address = "00:06:71:00:61:47"; // <==瑕佽繛鎺ョ殑钃濈墮璁惧MAC鍦板潃
 
 	private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
 
@@ -150,6 +150,7 @@ public class HelloADKActivity extends Activity implements Runnable {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.tab_main);
 
 		//		LayoutInflater inflater = LayoutInflater.from(this);
 		//		View viewInflatedFromXml = inflater.inflate(R.layout.tab1, null);
@@ -160,7 +161,7 @@ public class HelloADKActivity extends Activity implements Runnable {
 
 		//		mWindow = getWindow();
 		//		mWindow.setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
-		//		mWindow.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// 保持屏幕常亮
+		//		mWindow.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// 淇濇寔灞忓箷甯镐寒
 
 		actionBar = getActionBar();
 		//actionBar.hide();
@@ -174,7 +175,7 @@ public class HelloADKActivity extends Activity implements Runnable {
 		// Create Actionbar Tabs
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		// Set Tab Icon and Titles
-		Tab1 = actionBar.newTab().setIcon(R.drawable.exchange_128);
+		Tab1 = actionBar.newTab().setIcon(R.drawable.exchange_64);
 		Tab2 = actionBar.newTab().setText("Tab2");
 		Tab3 = actionBar.newTab().setText("Tab3");
 		// Set Tab Listeners
@@ -359,8 +360,8 @@ public class HelloADKActivity extends Activity implements Runnable {
 		//		});
 		//
 		//		enableControls(false);
-		// View_init(); // 初始化小控件
-		// projectinit(); // 初始化传感器监听
+		// View_init(); // 鍒濆鍖栧皬鎺т欢
+		// projectinit(); // 鍒濆鍖栦紶鎰熷櫒鐩戝惉
 
 	}
 
