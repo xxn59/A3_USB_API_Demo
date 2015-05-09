@@ -31,7 +31,9 @@ import java.util.UUID;
 import android.hardware.usb.UsbAccessory;
 import android.hardware.usb.UsbManager;
 
-import android.app.*;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
 import android.bluetooth.BluetoothDevice;
@@ -47,22 +49,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelFileDescriptor;
-import android.provider.Settings.System;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
-import android.widget.ToggleButton;
-import android.widget.Toast;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Window;
-import android.view.WindowManager;
-import android.view.View.OnClickListener;
+import android.widget.TextView;
 import android.app.ActionBar;
+
 
 public class HelloADKActivity extends Activity implements Runnable {
 
@@ -75,6 +69,7 @@ public class HelloADKActivity extends Activity implements Runnable {
 
 	private UsbManager mUsbManager;
 	private UsbAccessory mAccessory;
+
 
 //	private Window mWindow;
 	private ActionBar actionBar;
@@ -98,6 +93,7 @@ public class HelloADKActivity extends Activity implements Runnable {
 	//	private SeekBar mSeekBar2;
 	//	private SeekBar mSeekBar3;
 
+
 	SensorManager sensorManager;// 缁狅紕鎮婇崳銊ヮ嚠鐠烇拷
 	private Sensor gyroSensor;// 闂勶拷閾伙拷 娴肩姵鍔呴崳銊ヮ嚠鐠烇拷
 	private Sensor acceSensor;// 閸旂姾銆�
@@ -106,6 +102,8 @@ public class HelloADKActivity extends Activity implements Runnable {
 	private TextView tv_X;
 	private TextView tv_Y;
 	private TextView tv_Z;
+	
+	private Handler mHandler;
 
 //	private BluetoothAdapter mBluetoothAdapter = null;
 //	private BluetoothSocket btSocket = null;
@@ -161,6 +159,7 @@ public class HelloADKActivity extends Activity implements Runnable {
 
 		//		mWindow = getWindow();
 		//		mWindow.setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
+
 		//		mWindow.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// 娣囨繃瀵旂仦蹇撶鐢晲瀵�
 
 		actionBar = getActionBar();
@@ -170,14 +169,16 @@ public class HelloADKActivity extends Activity implements Runnable {
 		actionBar.setDisplayShowHomeEnabled(true);
 
 		// Hide Actionbar Title
+
 		actionBar.setDisplayShowTitleEnabled(true);
 
 		// Create Actionbar Tabs
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		// Set Tab Icon and Titles
-		Tab1 = actionBar.newTab().setIcon(R.drawable.exchange_64);
-		Tab2 = actionBar.newTab().setText("Tab2");
-		Tab3 = actionBar.newTab().setText("Tab3");
+
+		Tab1 = actionBar.newTab().setText("Basics");
+		Tab2 = actionBar.newTab().setText("Console");
+		Tab3 = actionBar.newTab().setText("Extras");
 		// Set Tab Listeners
 		Tab1.setTabListener(new TabListener(fragmentTab1));
 		Tab2.setTabListener(new TabListener(fragmentTab2));
@@ -186,6 +187,7 @@ public class HelloADKActivity extends Activity implements Runnable {
 		actionBar.addTab(Tab1);
 		actionBar.addTab(Tab2);
 		actionBar.addTab(Tab3);
+		
 
 
 
@@ -207,163 +209,8 @@ public class HelloADKActivity extends Activity implements Runnable {
 		}
 		// ///////////////////////////////////////////////////////////////////////////
 
-		// mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		// if(mBluetoothAdapter == null)
-		// {
-		// Toast.makeText(this, "Bluetooth is not available.",
-		// Toast.LENGTH_LONG).show();
-		// finish();
-		// return;
-		// }
-
-		// if(!mBluetoothAdapter.isEnabled())
-		// {
-		// Toast.makeText(this,
-		// "Please enable your Bluetooth and re-run this program.",
-		// Toast.LENGTH_LONG).show();
-		// finish();
-		// return;
-		//
-		// }
-
-
-		//		mToggleButton = (ToggleButton) findViewById(R.id.toggleBtn);
-		//		mStatusView = (TextView) findViewById(R.id.status);
-		//		mBtnStatusButton = (ToggleButton) findViewById(R.id.btnstatusBtn);
-		//		mSeekBar = (SeekBar) findViewById(R.id.seekBar1);
-		//		mSeekBar2 = (SeekBar) findViewById(R.id.seekBar2);
-		//		mSeekBar3 = (SeekBar) findViewById(R.id.seekBar3);
-		//		mButtonExit = (Button) findViewById(R.id.buttonExit);
-		//		mButtonOpen = (Button) findViewById(R.id.buttonOpen);
-		//
-		//		mToggleButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-		//			@Override
-		//			public void onCheckedChanged(CompoundButton buttonView,
-		//					boolean isChecked) {
-		//				byte command = 0x1;
-		//				byte value = (byte) (isChecked ? 0x1 : 0x0);
-		//				sendCommand(command, value);
-		//			}
-		//		});
-		//		
-		//		mButtonExit.setOnClickListener(new OnClickListener() {
-		//			
-		//			@Override
-		//			public void onClick(View v) {
-		//				// TODO Auto-generated method stub
-		//				java.lang.System.exit(0);
-		//			}
-		//		});
-		//		
-		//		mButtonOpen.setOnClickListener(new OnClickListener() {
-		//			
-		//			@Override
-		//			public void onClick(View v) {
-		//				// TODO Auto-generated method stub
-		//				openAccessory(mAccessory);
-		//			}
-		//		});
-		//
-		//		mSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-		//			@Override
-		//			public void onProgressChanged(SeekBar seekBar, int progress,
-		//					boolean fromUser) {
-		//				// Dragging knob
-		//				byte value = (byte) (progress * 255 / 100);
-		//				byte command = 0x2;
-		//				Log.d(TAG, "Current Value:" + progress + "," + value);
-		//				sendCommand(command, value);
-		//			}
-		//
-		//			@Override
-		//			public void onStartTrackingTouch(SeekBar seekBar) {
-		//				// Touch knob
-		//			}
-		//
-		//			@Override
-		//			public void onStopTrackingTouch(SeekBar seekBar) {
-		//				// Release knob
-		//				// mSeekBar.setProgress(50);
-		//			}
-		//		});
-		//		mSeekBar2.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-		//			@Override
-		//			public void onProgressChanged(SeekBar seekBar, int progress,
-		//					boolean fromUser) {
-		//				// Dragging knob
-		//				byte value = (byte) (progress * 255 / 100);
-		//				byte command = 0x3;
-		//				Log.d(TAG, "Current Value:" + progress + "," + value);
-		//				sendCommand(command, value);
-		//			}
-		//
-		//			@Override
-		//			public void onStartTrackingTouch(SeekBar seekBar) {
-		//				// Touch knob
-		//			}
-		//
-		//			@Override
-		//			public void onStopTrackingTouch(SeekBar seekBar) {
-		//				// Release knob
-		//				// mSeekBar.setProgress(50);
-		//			}
-		//		});
-		//		mSeekBar3.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-		//			@Override
-		//			public void onProgressChanged(SeekBar seekBar, int progress,
-		//					boolean fromUser) {
-		//				// Dragging knob
-		//				byte value = (byte) (progress * 255 / 100);
-		//				byte command = 0x4;
-		//				Log.d(TAG, "Current Value:" + progress + "," + value);
-		//				sendCommand(command, value);
-		//			}
-		//
-		//			@Override
-		//			public void onStartTrackingTouch(SeekBar seekBar) {
-		//				// Touch knob
-		////				String message;
-		////				byte[] msgBuffer;
-		////				try {
-		////					outStream = btSocket.getOutputStream();
-		////				} catch (IOException e) {
-		////					Log.e(TAG, "ON RESUME : Output Stream creation failed.", e);
-		////				}
-		////				message = Integer.toString(seekBar.getProgress());
-		////				msgBuffer = message.getBytes();
-		////				try {
-		////					outStream.write(msgBuffer);
-		////				} catch (IOException e) {
-		////					Log.e(TAG, "ON RESUME : Exception during write.", e);
-		////				}
-		//			}
-		//
-		//			@Override
-		//			public void onStopTrackingTouch(SeekBar seekBar) {
-		//				// Release knob
-		//				// mSeekBar.setProgress(50);
-		////				String message;
-		////				byte[] msgBuffer;
-		////				try {
-		////					outStream = btSocket.getOutputStream();
-		////				} catch (IOException e) {
-		////					Log.e(TAG, "ON RESUME : Output Stream creation failed.", e);
-		////				}
-		////				message = Integer.toString(seekBar.getProgress());
-		////				msgBuffer = message.getBytes();
-		////				try {
-		////					outStream.write(msgBuffer);
-		////				} catch (IOException e) {
-		////					Log.e(TAG, "ON RESUME : Exception during write.", e);
-		////				}
-		//			}
-		//		});
-		//
-		//		enableControls(false);
-		// View_init(); // 閸掓繂顫愰崠鏍х毈閹貉傛
-		// projectinit(); // 閸掓繂顫愰崠鏍︾炊閹扮喎娅掗惄鎴濇儔
-
-	}
+		
+}
 
 	@Override
 	public void onResume() {
@@ -528,6 +375,10 @@ public class HelloADKActivity extends Activity implements Runnable {
 
 	};
 
+	private int enableControl;
+
+	
+
 	private void openAccessory(UsbAccessory accessory) {
 		mFileDescriptor = mUsbManager.openAccessory(accessory);
 
@@ -544,6 +395,8 @@ public class HelloADKActivity extends Activity implements Runnable {
 			Log.d(TAG, "accessory opened");
 
 			//			enableControls(true);
+			enableControl = 1;
+			getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
 		} else {
 			Log.d(TAG, "accessory open fail");
 		}
@@ -551,7 +404,9 @@ public class HelloADKActivity extends Activity implements Runnable {
 
 	private void closeAccessory() {
 		//		enableControls(false);
-
+		enableControl = 0;
+		getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
+		
 		try {
 			if (mFileDescriptor != null) {
 				mFileDescriptor.close();
@@ -572,8 +427,8 @@ public class HelloADKActivity extends Activity implements Runnable {
 	//		mToggleButton.setEnabled(enable);
 	//	}
 
+	
 	private static final int MESSAGE_LED = 1;
-
 	// USB read thread
 	@Override
 	public void run() {
@@ -616,22 +471,13 @@ public class HelloADKActivity extends Activity implements Runnable {
 
 		}
 	}
+	
+	public void setHandler(Handler handler)
+	{
+		mHandler = handler;
+	}
 
-	// Change the view in the UI thread
-	private Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case MESSAGE_LED:
-				if (msg.arg1 == 0) {
-					//					mBtnStatusButton.setChecked(false);
-				} else {
-					//					mBtnStatusButton.setChecked(true);
-				}
-				break;
-			}
-		}
-	};
+	
 
 	// Android -> Accessory
 	public void sendCommand(byte command, byte value) {
@@ -645,5 +491,33 @@ public class HelloADKActivity extends Activity implements Runnable {
 				Log.e(TAG, "write failed", e);
 			}
 		}
+	}
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		MenuItem connection_status = menu.findItem(R.id.connection_status);
+		if(enableControl == 1)
+		{
+			connection_status.setIcon(R.drawable.connect_48);
+		}
+		else
+		{
+			connection_status.setIcon(R.drawable.disconnect_2_48);
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		// TODO Auto-generated method stub
+		return super.onMenuItemSelected(featureId, item);
 	}
 }

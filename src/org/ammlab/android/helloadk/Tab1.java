@@ -2,6 +2,8 @@ package org.ammlab.android.helloadk;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.app.Activity;
 import android.app.Fragment;
 
 public class Tab1 extends Fragment{
@@ -24,10 +27,11 @@ public class Tab1 extends Fragment{
 	private Button mButtonExit;
 	private Button mButtonOpen;
 	private ToggleButton mBtnStatusButton;
-	private TextView mStatusView;
+//	private TextView mStatusView;
 	private SeekBar mSeekBar;
 	private SeekBar mSeekBar2;
 	private SeekBar mSeekBar3;
+	HelloADKActivity mActivity;
 	
 	
 	@Override
@@ -36,7 +40,7 @@ public class Tab1 extends Fragment{
         View rootView = inflater.inflate(R.layout.tab1, container, false);
         
         mToggleButton = (ToggleButton) rootView.findViewById(R.id.toggleBtn);
-		mStatusView = (TextView) rootView.findViewById(R.id.status);
+//		mStatusView = (TextView) rootView.findViewById(R.id.status);
 		mBtnStatusButton = (ToggleButton) rootView.findViewById(R.id.btnstatusBtn);
 		mSeekBar = (SeekBar) rootView.findViewById(R.id.seekBar1);
 		mSeekBar2 = (SeekBar) rootView.findViewById(R.id.seekBar2);
@@ -68,7 +72,7 @@ public class Tab1 extends Fragment{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-//				openAccessory(mAccessory);
+//				mActivity.openAccessory(mAccessory);
 			}
 		});
 
@@ -80,7 +84,7 @@ public class Tab1 extends Fragment{
 				byte value = (byte) (progress * 255 / 100);
 				byte command = 0x2;
 				Log.d(TAG, "Current Value:" + progress + "," + value);
-//				sendCommand(command, value);
+				mActivity.sendCommand(command, value);
 			}
 
 			@Override
@@ -102,7 +106,7 @@ public class Tab1 extends Fragment{
 				byte value = (byte) (progress * 255 / 100);
 				byte command = 0x3;
 				Log.d(TAG, "Current Value:" + progress + "," + value);
-//				sendCommand(command, value);
+				mActivity.sendCommand(command, value);
 			}
 
 			@Override
@@ -124,7 +128,7 @@ public class Tab1 extends Fragment{
 				byte value = (byte) (progress * 255 / 100);
 				byte command = 0x4;
 				Log.d(TAG, "Current Value:" + progress + "," + value);
-//				sendCommand(command, value);
+				mActivity.sendCommand(command, value);
 			}
 
 			@Override
@@ -171,12 +175,36 @@ public class Tab1 extends Fragment{
         return rootView;
     }
 	
+	@Override
+	public void onAttach(Activity activity) {
+		// TODO Auto-generated method stub
+		super.onAttach(activity);
+		mActivity = (HelloADKActivity)activity;
+		mActivity.setHandler(mHandler);
+	}
+	
+	private static final int MESSAGE_LED = 1;
+	// Change the view in the UI thread
+		public Handler mHandler = new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case MESSAGE_LED:
+					if (msg.arg1 == 0) {
+											mBtnStatusButton.setChecked(false);
+					} else {
+											mBtnStatusButton.setChecked(true);
+					}
+					break;
+				}
+			}
+		};
 	
 	private void enableControls(boolean enable) {
 		if (enable) {
-			mStatusView.setText("connected");
+//			mStatusView.setText("connected");
 		} else {
-			mStatusView.setText("not connect");
+//			mStatusView.setText("not connect");
 		}
 		mToggleButton.setEnabled(enable);
 	}
