@@ -98,10 +98,10 @@ public class HelloADKActivity extends Activity implements Runnable {
 	//	private SeekBar mSeekBar2;
 	//	private SeekBar mSeekBar3;
 
-	SensorManager sensorManager;// 绠＄悊鍣ㄥ璞�
-	private Sensor gyroSensor;// 闄�铻� 浼犳劅鍣ㄥ璞�
-	private Sensor acceSensor;// 鍔犺〃
-	private Sensor quatSensor;// 鏃嬭浆閫傞噺
+	SensorManager sensorManager;// 缁狅紕鎮婇崳銊ヮ嚠鐠烇拷
+	private Sensor gyroSensor;// 闂勶拷閾伙拷 娴肩姵鍔呴崳銊ヮ嚠鐠烇拷
+	private Sensor acceSensor;// 閸旂姾銆�
+	private Sensor quatSensor;// 閺冨娴嗛柅鍌炲櫤
 
 	private TextView tv_X;
 	private TextView tv_Y;
@@ -113,8 +113,8 @@ public class HelloADKActivity extends Activity implements Runnable {
 //	private InputStream inStream = null;
 	// private static final UUID MY_UUID =
 	// UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	// //杩欐潯鏄摑鐗欎覆鍙ｉ�氱敤鐨刄UID锛屼笉瑕佹洿鏀�
-	// private static String address = "00:06:71:00:61:47"; // <==瑕佽繛鎺ョ殑钃濈墮璁惧MAC鍦板潃
+	// //鏉╂瑦娼弰顖濇憫閻楁瑤瑕嗛崣锝夛拷姘辨暏閻ㄥ垊UID閿涘奔绗夌憰浣规纯閺�锟�
+	// private static String address = "00:06:71:00:61:47"; // <==鐟曚浇绻涢幒銉ф畱閽冩繄澧拋鎯ь槵MAC閸︽澘娼�
 
 	private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
 
@@ -161,16 +161,16 @@ public class HelloADKActivity extends Activity implements Runnable {
 
 		//		mWindow = getWindow();
 		//		mWindow.setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
-		//		mWindow.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// 淇濇寔灞忓箷甯镐寒
+		//		mWindow.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// 娣囨繃瀵旂仦蹇撶鐢晲瀵�
 
 		actionBar = getActionBar();
 		//actionBar.hide();
 		//actionBar.show();
 		// Hide Actionbar Icon
-		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowHomeEnabled(true);
 
 		// Hide Actionbar Title
-		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
 
 		// Create Actionbar Tabs
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -360,8 +360,8 @@ public class HelloADKActivity extends Activity implements Runnable {
 		//		});
 		//
 		//		enableControls(false);
-		// View_init(); // 鍒濆鍖栧皬鎺т欢
-		// projectinit(); // 鍒濆鍖栦紶鎰熷櫒鐩戝惉
+		// View_init(); // 閸掓繂顫愰崠鏍х毈閹貉傛
+		// projectinit(); // 閸掓繂顫愰崠鏍︾炊閹扮喎娅掗惄鎴濇儔
 
 	}
 
